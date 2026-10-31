@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded',()=>{const loader=document.getElementById('pageLoader');if(!loader)return;window.addEventListener('load',()=>setTimeout(()=>loader.classList.add('done'),450));setTimeout(()=>loader.classList.add('done'),2200);});
