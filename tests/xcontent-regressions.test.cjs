@@ -32,3 +32,11 @@ test('the provider migration uses literal-dot host patterns accepted by PostgreS
   }
   assert.ok(!migration.includes('youtube-nocookie\\\\.com'), 'double-escaped hostname pattern would reject the valid URL');
 });
+
+test('frontend reruns filters after the Supabase feed appends cards', () => {
+  const app = fs.readFileSync(path.join(__dirname, '../assets/js/app.js'), 'utf8');
+  const backend = fs.readFileSync(path.join(__dirname, '../assets/js/backend.js'), 'utf8');
+  assert.match(app, /document\.querySelectorAll\('\.video-card'\)/);
+  assert.match(app, /document\.addEventListener\('xcontent:catalogue-updated',filterVideos\)/);
+  assert.match(backend, /dispatchEvent\(new Event\('xcontent:catalogue-updated'\)\)/);
+});
