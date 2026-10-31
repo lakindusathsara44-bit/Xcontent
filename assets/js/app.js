@@ -158,5 +158,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     document.querySelector('.watch-main > .watch-layout h1').textContent=provider+' preview';
   });
+  document.querySelectorAll('[data-video-embed]').forEach(button=>button.addEventListener('click',()=>{
+    const field=document.getElementById('embedUrl');
+    field.value=button.getAttribute('data-video-embed');
+    embedForm.requestSubmit();
+  }));
 });
 function showToast(message){let toast=document.querySelector('.toast');if(!toast){toast=document.createElement('div');toast.className='toast';document.body.appendChild(toast);}toast.textContent=message;toast.style.display='block';clearTimeout(window.xToastTimer);window.xToastTimer=setTimeout(()=>toast.style.display='none',2600);}
