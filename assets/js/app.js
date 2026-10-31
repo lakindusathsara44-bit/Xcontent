@@ -103,47 +103,60 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(clearButton)clearButton.addEventListener('click',clearPreview);
   window.addEventListener('beforeunload',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);});
 
-  // Provider-aware URL checker. Adult-site players are deliberately not loaded in this non-explicit prototype.
+  // Provider embed preview. Only provider-owned embed endpoints are accepted; arbitrary iframe hosts are rejected.
   const embedForm=document.getElementById('embedForm');
   if(embedForm)embedForm.addEventListener('submit',event=>{
     event.preventDefault();
-    let url;
-    try{url=new URL(document.getElementById('embedUrl').value.trim());}catch{showToast('Enter a valid video URL.');return;}
-    if(url.protocol!=='https:'){showToast('Use a secure HTTPS video URL.');return;}
-    const host=url.hostname.toLowerCase().replace(/^www\./,'');
-    let embedUrl=null,provider='',adultProvider=false;
-    if(host==='youtube.com'&&url.pathname==='/watch'&&url.searchParams.get('v')){
-      embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.searchParams.get('v'));provider='YouTube';
-    }else if(host==='youtu.be'&&url.pathname.length>1){
-      embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.pathname.slice(1));provider='YouTube';
-    }else if(host==='vimeo.com'&&/^\/[0-9]+$/.test(url.pathname)){
-      embedUrl='https://player.vimeo.com/video/'+url.pathname.slice(1);provider='Vimeo';
-    }else if(['pornhub.com','xvideos.com','redtube.com','xnxx.com'].includes(host)){
-      const validPath={
-        'pornhub.com':/^\/(view_video\.php|video\/)[^/]+/i,
-        'xvideos.com':/^\/video[^/]+/i,
-        'redtube.com':/^\/[^/]*video[^/]*\/[0-9]+/i,
-        'xnxx.com':/^\/video-[^/]+/i
-      };
-      if(!validPath[host].test(url.pathname)||(host==='pornhub.com'&&!url.searchParams.get('viewkey'))){showToast('The link host is recognised, but this does not look like a supported video page URL.');return;}
-      provider=host==='pornhub.com'?'Pornhub':host==='xvideos.com'?'XVideos':host==='redtube.com'?'RedTube':'XNXX';
-      adultProvider=true;
-    }else{showToast('Supported providers: YouTube, Vimeo, Pornhub, XVideos, RedTube and XNXX.');return;}
-    const preview=document.getElementById('embedPreview');
-    const frame=document.getElementById('embedFrame');
-    const note=document.getElementById('embedProviderNote');
-    const linkCard=document.getElementById('providerLinkCard');
-    if(frame){frame.hidden=adultProvider;frame.src=adultProvider?'about:blank':embedUrl;}
-    if(linkCard){
-      linkCard.hidden=!adultProvider;
-      if(adultProvider){
-        document.getElementById('providerName').textContent=provider+' link recognised';
-        document.getElementById('providerStatusText').textContent='External player disabled in this prototype. The original page can be opened directly; embedding must use the provider’s official embed code and comply with its current rules.';
-        const open=document.getElementById('providerOpenLink');open.href=url.href;
-      }
+    const input=document.getElementById('embedUrl').value.trim();
+    let candidate=input;
+    if(/<iframe\\b/i.test(input)){
+      const match=input.match(/<iframe\\b[^>]*?\\bsrc\\s*=\\s*["']([^"']+)["']/i);
+      if(!match){showToast('Could not find an iframe src. Paste the provider’s official embed code.');return;}
+      candidate=match[1];
     }
-    note.textContent=adultProvider?'Provider detected. No adult-site player or media has been loaded.':' '+provider+' demo embed preview. Share only videos you own or are authorised to embed.';
-    preview.hidden=false;
+    let url;
+    try{url=new URL(candidate);}catch{showToast('Enter a valid video URL or official iframe code.');return;}
+    if(url.protocol!=='https:'){showToast('Use a secure HTTPS video URL.');return;}
+    const host=url.hostname.toLowerCase().replace(/^www\\./,'');
+    let embedUrl=null,provider='',externalUrl=url.href;
+    if(host==='pornhub.com'){
+      provider='Pornhub';
+      if(/^\\/embed\\/[A-Za-z0-9_-]+\\/?$/.test(url.pathname))embedUrl=url.href;
+      else if((url.pathname==='/view_video.php'||url.pathname==='/video')&&url.searchParams.get('viewkey')){
+        embedUrl='https://www.pornhub.com/embed/'+encodeURIComponent(url.searchParams.get('viewkey'));
+      }
+    }else if(host==='xvideos.com'){
+      provider='XVideos';
+      if(/^\\/embedframe\\/[A-Za-z0-9_-]+\\/?$/.test(url.pathname))embedUrl=url.href;
+    }else if(host==='youtube.com'&&url.pathname==='/watch'&&url.searchParams.get('v')){
+      provider='YouTube';embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.searchParams.get('v'));
+    }else if(host==='youtu.be'&&url.pathname.length>1){
+      provider='YouTube';embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.pathname.slice(1));
+    }else if(host==='vimeo.com'&&/^\\/[0-9]+$/.test(url.pathname)){
+      provider='Vimeo';embedUrl='https://player.vimeo.com/video/'+url.pathname.slice(1);
+    }else if(host==='player.vimeo.com'&&/^\\/video\\/[0-9]+$/.test(url.pathname)){
+      provider='Vimeo';embedUrl=url.href;
+    }else if(host==='www.youtube-nocookie.com'&&/^\\/embed\\/[A-Za-z0-9_-]+$/.test(url.pathname)){
+      provider='YouTube';embedUrl=url.href;
+    }else{
+      showToast('Supported sources: official Pornhub, XVideos, YouTube and Vimeo embed URLs.');return;
+    }
+    const frame=document.getElementById('embedFrame');
+    const demo=document.getElementById('demoPlayer');
+    const card=document.getElementById('providerLinkCard');
+    const note=document.getElementById('embedProviderNote');
+    if(demo){demo.pause();demo.hidden=true;}
+    if(embedUrl){
+      frame.src=embedUrl;frame.hidden=false;card.hidden=true;
+      note.textContent=provider+' embed loaded. If playback is blocked, check the provider’s embed permissions or open the original page.';
+    }else{
+      frame.removeAttribute('src');frame.hidden=true;card.hidden=false;
+      document.getElementById('providerName').textContent=provider+' video link detected';
+      document.getElementById('providerStatusText').textContent='This page URL is not itself an embeddable player URL. Paste the official iframe embed code from the provider to preview it here.';
+      const open=document.getElementById('providerOpenLink');open.href=externalUrl;
+      note.textContent='Official embed code is required for this video.';
+    }
+    document.querySelector('.watch-main > .watch-layout h1').textContent=provider+' preview';
   });
 });
 function showToast(message){let toast=document.querySelector('.toast');if(!toast){toast=document.createElement('div');toast.className='toast';document.body.appendChild(toast);}toast.textContent=message;toast.style.display='block';clearTimeout(window.xToastTimer);window.xToastTimer=setTimeout(()=>toast.style.display='none',2600);}
