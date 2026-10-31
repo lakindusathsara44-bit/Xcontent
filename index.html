@@ -1,24 +1,101 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#09090e">
-  <meta name="description" content="Xcontent — a creator-first membership platform concept.">
-  <title>Xcontent — Your content. Your community.</title>
+  <meta name="description" content="Xcontent — a public discovery and video-viewing interface concept.">
+  <title>Xcontent — Discover videos</title>
   <link rel="stylesheet" href="assets/css/styles.css">
-  <script defer src="assets/js/loader.js"></script><script defer src="assets/js/app.js"></script>
+  <script defer src="assets/js/loader.js"></script>
+  <script defer src="assets/js/app.js"></script>
 </head>
-<body data-page="home">
+<body data-page="public-home" data-age-gate="true">
   <div class="page-loader" id="pageLoader"><div class="loader-mark">X<span>content</span></div><div class="loader-track"><i></i></div><p>Preparing your experience</p></div>
-  <header class="site-header"><a class="brand" href="index.html">X<span>content</span></a><nav><a href="#features">Features</a><a href="creator/index.html">For creators</a><a href="viewer/index.html">For viewers</a><a class="nav-login" href="auth/login.html">Log in</a><a class="button button-small" href="auth/register.html">Get started</a></nav><button class="menu-toggle" aria-label="Open menu">☰</button></header>
-  <main>
-    <section class="hero container">
-      <div class="hero-copy"><span class="eyebrow">A creator-first membership platform</span><h1>Make your space.<br><span class="gradient-text">Build your community.</span></h1><p class="lead">A modern membership experience designed to bring creators and their communities closer — with thoughtful tools, clear controls and safety at the centre.</p><div class="hero-actions"><a class="button" href="auth/register.html">Create an account <span>↗</span></a><a class="button button-ghost" href="#features">Explore the platform</a></div><div class="hero-note"><span class="status-dot"></span> Product concept · Demo mode</div></div>
-      <div class="hero-art"><div class="glow-orb"></div><div class="dashboard-preview"><div class="preview-top"><span>CREATOR STUDIO</span><span class="demo-pill">DEMO</span></div><div class="preview-balance"><small>Monthly overview</small><strong>$1,240<span>.00</span></strong><em>Illustrative data only</em></div><div class="preview-chart"><i style="height:30%"></i><i style="height:47%"></i><i style="height:38%"></i><i style="height:68%"></i><i style="height:55%"></i><i style="height:86%"></i><i style="height:72%"></i><i style="height:100%"></i></div><div class="preview-stats"><div><b>248</b><small>Members</small></div><div><b>32</b><small>Posts</small></div><div><b>4.8</b><small>Rating</small></div></div></div><div class="floating-chip">✦ Creator tools</div></div>
+
+  <section class="age-gate" id="ageGate" aria-labelledby="ageTitle" role="dialog" aria-modal="true">
+    <div class="age-gate-card">
+      <div class="brand age-brand">X<span>content</span></div>
+      <div class="age-symbol">18+</div>
+      <p class="eyebrow">Age-restricted concept</p>
+      <h1 id="ageTitle">Are you 18 years of age or older?</h1>
+      <p>This demonstration contains only non-explicit sample media. The age prompt is a user-interface prototype and does not verify your age or provide legally sufficient age assurance.</p>
+      <div class="age-actions">
+        <button class="button" id="ageConfirm" type="button">Yes, I am 18 or older</button>
+        <a class="button button-ghost" href="https://www.google.com/" rel="noopener">No, leave this page</a>
+      </div>
+      <small>By continuing, you confirm that you are at least 18. Demo confirmation is stored only for this browser tab session.</small>
+    </div>
+  </section>
+
+  <header class="site-header public-header">
+    <a class="brand" href="index.html">X<span>content</span></a>
+    <form class="search-box" id="videoSearch" role="search">
+      <input id="searchInput" type="search" placeholder="Search videos..." aria-label="Search videos">
+      <button type="submit" aria-label="Search">⌕</button>
+    </form>
+    <nav>
+      <a class="active" href="index.html">Videos</a>
+      <a href="#categories">Categories</a>
+      <a href="creator/index.html">Creators</a>
+      <a class="nav-login" href="auth/login.html">Log in</a>
+    </nav>
+    <button class="menu-toggle" aria-label="Open menu">☰</button>
+  </header>
+
+  <main class="public-main container">
+    <div class="public-welcome">
+      <div><span class="eyebrow">XCONTENT · PUBLIC DISCOVERY</span><h1>Explore videos</h1><p>Browse the public demo library. No account is needed to view these sample clips.</p></div>
+      <span class="demo-pill">NON-EXPLICIT DEMO</span>
+    </div>
+
+    <nav class="category-bar" id="categories" aria-label="Video categories">
+      <button class="category-chip active" data-filter="all" type="button">For you</button>
+      <button class="category-chip" data-filter="popular" type="button">Popular</button>
+      <button class="category-chip" data-filter="nature" type="button">Nature</button>
+      <button class="category-chip" data-filter="travel" type="button">Travel</button>
+      <button class="category-chip" data-filter="lifestyle" type="button">Lifestyle</button>
+      <button class="category-chip" data-filter="ocean" type="button">Ocean</button>
+    </nav>
+
+    <section class="video-grid" id="videoGrid" aria-label="Video library">
+      <a class="video-card" href="watch.html" data-category="popular nature" data-title="Nature in motion peaceful flower field">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=800&auto=format&fit=crop&q=85" alt="Sunrise over a green landscape"><span class="duration">00:30</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Nature in motion</h2><p> Xcontent Demo <span>•</span> 12.4K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="travel popular" data-title="Open horizons mountain travel">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&auto=format&fit=crop&q=85" alt="Mountain scenery beneath a wide sky"><span class="duration">02:14</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Open horizons</h2><p>Wander Studio <span>•</span> 8.2K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="lifestyle" data-title="Green details indoor plants lifestyle">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=800&auto=format&fit=crop&q=85" alt="Green indoor plants in natural light"><span class="duration">01:08</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Green details</h2><p>Everyday Frame <span>•</span> 5.7K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="ocean popular" data-title="Ocean calm waves shore">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&auto=format&fit=crop&q=85" alt="Ocean waves meeting the shore"><span class="duration">03:42</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Ocean calm</h2><p>Blue Horizon <span>•</span> 19.1K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="nature" data-title="Forest path nature walk">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop&q=85" alt="Sunlight passing through a forest"><span class="duration">04:05</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Into the forest</h2><p>Wild Earth <span>•</span> 3.9K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="travel" data-title="Coastal road travel journey">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&auto=format&fit=crop&q=85" alt="Mountain lake and winding landscape"><span class="duration">05:21</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>A quiet journey</h2><p>Wander Studio <span>•</span> 6.3K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="lifestyle popular" data-title="Slow morning coffee lifestyle">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=800&auto=format&fit=crop&q=85" alt="Coffee on a table in a cafe"><span class="duration">01:56</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Slow morning</h2><p>Everyday Frame <span>•</span> 10.8K views</p></div>
+      </a>
+      <a class="video-card" href="watch.html" data-category="ocean" data-title="Blue water ocean waves">
+        <div class="thumb-wrap"><img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=800&auto=format&fit=crop&q=85" alt="Blue ocean water in sunlight"><span class="duration">02:37</span><span class="play-overlay">▶</span></div>
+        <div class="video-card-info"><h2>Blue water</h2><p>Blue Horizon <span>•</span> 4.6K views</p></div>
+      </a>
     </section>
-    <section class="section container" id="features"><div class="section-heading"><span class="eyebrow">One platform, two experiences</span><h2>Everything starts with <span class="gradient-text">connection.</span></h2><p>Dedicated spaces for people who create and people who follow their work.</p></div><div class="feature-grid"><article class="feature-card"><div class="feature-icon">◈</div><h3>Creator workspace</h3><p>Manage your public profile, review audience insights and organise your creator activity.</p><a href="creator/index.html" class="text-link">Explore creator space →</a></article><article class="feature-card"><div class="feature-icon">◎</div><h3>Viewer experience</h3><p>Discover creator profiles, manage memberships and keep your followed creators together.</p><a href="viewer/index.html" class="text-link">Explore viewer space →</a></article><article class="feature-card"><div class="feature-icon">⬡</div><h3>Trust by design</h3><p>Safety, privacy, moderation and consent workflows are core requirements — not add-ons.</p><a href="#safety" class="text-link">Our safety approach →</a></article></div></section>
-    <section class="section container split-section" id="safety"><div><span class="eyebrow">Built responsibly</span><h2>Safety is part of the product.</h2><p>Any future production service must meet the laws where it operates and use robust age and identity checks, documented consent, privacy safeguards, reporting and moderation.</p></div><div class="safety-panel"><div class="safety-row"><span>✓</span><div><b>Privacy-first planning</b><small>Collect only what is necessary.</small></div></div><div class="safety-row"><span>✓</span><div><b>Consent and rights</b><small>Clear creator permissions and records.</small></div></div><div class="safety-row"><span>✓</span><div><b>Moderation workflows</b><small>Reporting, review and response tools.</small></div></div></div></section>
-    <section class="container prototype-notice"><b>Prototype notice</b><p>This repository currently contains a non-explicit front-end demonstration. Accounts, uploads, subscriptions and payments are not connected. Use fictional test information only; do not submit real identity documents or private media.</p></section>
+    <p class="empty-results" id="emptyResults" hidden>No demo videos match your search.</p>
+    <div class="prototype-notice public-notice"><b>Prototype notice</b><p>This is a non-explicit front-end demo using sample media. The age prompt is not real age verification. Accounts, creator uploads, subscriptions and payments are disabled; no viewer data is collected.</p></div>
   </main>
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html">X<span>content</span></a><span>© 2026 Xcontent · Concept prototype</span><div><a href="creator/index.html">Creators</a><a href="viewer/index.html">Viewers</a><a href="auth/login.html">Login</a></div></div></footer>
-</body></html>
+
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html">X<span>content</span></a><span>© 2026 Xcontent · Public discovery demo</span><div><a href="creator/index.html">Creator area</a><a href="auth/login.html">Login</a></div></div></footer>
+</body>
+</html>
