@@ -26,7 +26,7 @@ test('searches remote cards using rendered text when data-title is absent', () =
 });
 
 test('the provider migration uses literal-dot host patterns accepted by PostgreSQL regex', () => {
-  const migration = fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261031160000_xcontent_add_pornhub_xvideos_embeds.sql'), 'utf8');
+  const migration = fs.readFileSync(path.join(__dirname, '../supabase/migrations/20261031121904_xcontent_add_pornhub_xvideos_embeds.sql'), 'utf8');
   for (const expected of ['youtube-nocookie[.]com', 'player[.]vimeo[.]com', 'pornhub[.]com', 'xvideos[.]com']) {
     assert.ok(migration.includes(expected), 'missing literal-dot host pattern: ' + expected);
   }
