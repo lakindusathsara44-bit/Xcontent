@@ -109,34 +109,34 @@ document.addEventListener('DOMContentLoaded',()=>{
     event.preventDefault();
     const input=document.getElementById('embedUrl').value.trim();
     let candidate=input;
-    if(/<iframe\\b/i.test(input)){
-      const match=input.match(/<iframe\\b[^>]*?\\bsrc\\s*=\\s*["']([^"']+)["']/i);
+    if(/<iframe\b/i.test(input)){
+      const match=input.match(/<iframe\b[^>]*?\bsrc\s*=\s*["']([^"']+)["']/i);
       if(!match){showToast('Could not find an iframe src. Paste the provider’s official embed code.');return;}
       candidate=match[1];
     }
     let url;
     try{url=new URL(candidate);}catch{showToast('Enter a valid video URL or official iframe code.');return;}
     if(url.protocol!=='https:'){showToast('Use a secure HTTPS video URL.');return;}
-    const host=url.hostname.toLowerCase().replace(/^www\\./,'');
+    const host=url.hostname.toLowerCase().replace(/^www\./,'');
     let embedUrl=null,provider='',externalUrl=url.href;
     if(host==='pornhub.com'){
       provider='Pornhub';
-      if(/^\\/embed\\/[A-Za-z0-9_-]+\\/?$/.test(url.pathname))embedUrl=url.href;
+      if(/^\/embed\/[A-Za-z0-9_-]+\/?$/.test(url.pathname))embedUrl=url.href;
       else if((url.pathname==='/view_video.php'||url.pathname==='/video')&&url.searchParams.get('viewkey')){
         embedUrl='https://www.pornhub.com/embed/'+encodeURIComponent(url.searchParams.get('viewkey'));
       }
     }else if(host==='xvideos.com'){
       provider='XVideos';
-      if(/^\\/embedframe\\/[A-Za-z0-9_-]+\\/?$/.test(url.pathname))embedUrl=url.href;
+      if(/^\/embedframe\/[A-Za-z0-9_-]+\/?$/.test(url.pathname))embedUrl=url.href;
     }else if(host==='youtube.com'&&url.pathname==='/watch'&&url.searchParams.get('v')){
       provider='YouTube';embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.searchParams.get('v'));
     }else if(host==='youtu.be'&&url.pathname.length>1){
       provider='YouTube';embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.pathname.slice(1));
-    }else if(host==='vimeo.com'&&/^\\/[0-9]+$/.test(url.pathname)){
+    }else if(host==='vimeo.com'&&/^\/[0-9]+$/.test(url.pathname)){
       provider='Vimeo';embedUrl='https://player.vimeo.com/video/'+url.pathname.slice(1);
-    }else if(host==='player.vimeo.com'&&/^\\/video\\/[0-9]+$/.test(url.pathname)){
+    }else if(host==='player.vimeo.com'&&/^\/video\/[0-9]+$/.test(url.pathname)){
       provider='Vimeo';embedUrl=url.href;
-    }else if(host==='www.youtube-nocookie.com'&&/^\\/embed\\/[A-Za-z0-9_-]+$/.test(url.pathname)){
+    }else if(host==='www.youtube-nocookie.com'&&/^\/embed\/[A-Za-z0-9_-]+$/.test(url.pathname)){
       provider='YouTube';embedUrl=url.href;
     }else{
       showToast('Supported sources: official Pornhub, XVideos, YouTube and Vimeo embed URLs.');return;
