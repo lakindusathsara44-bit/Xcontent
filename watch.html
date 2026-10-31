@@ -24,6 +24,10 @@
             <textarea id="embedUrl" rows="3" maxlength="5000" placeholder="Paste video URL or official iframe embed code here" required></textarea>
             <button class="button button-small" type="submit">Load preview</button>
           </form>
+          <div class="preview-shortcuts" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px" aria-label="Saved video previews">
+            <button class="button button-ghost button-small" type="button" data-video-embed="https://www.xvideos.com/embedframe/outmifvc7f0">Preview video 1</button>
+            <button class="button button-ghost button-small" type="button" data-video-embed="https://www.xvideos.com/embedframe/klkkmokdede">Preview video 2</button>
+          </div>
           <p id="embedProviderNote" role="status" style="margin:10px 0 0;color:#aaa">Only official provider embed URLs are loaded. If a video cannot be embedded, open its original page.</p>
         </section>
         <div class="watch-player"><iframe id="embedFrame" title="External video preview" hidden width="100%" height="450" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe><div id="providerLinkCard" hidden style="padding:22px;background:#171720;border-radius:12px"><b id="providerName">Video provider</b><p id="providerStatusText">This video cannot be embedded here.</p><a id="providerOpenLink" class="button button-small" href="#" target="_blank" rel="noopener noreferrer">Open original video</a></div><video id="demoPlayer" controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1400&auto=format&fit=crop&q=85"><source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">Your browser does not support HTML video.</video><div id="remoteVideoPlayer" hidden></div></div>
