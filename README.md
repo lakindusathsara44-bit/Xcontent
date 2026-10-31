@@ -31,7 +31,7 @@ on conflict do nothing;
 ```
 
 3. Log in at `auth/login.html` and open Owner Studio.
-4. Set the Supabase Auth Site URL and redirect allowlist to the deployed GitHub Pages domain.
+4. Set the Supabase Auth Site URL and redirect allowlist to the deployed site URL. Registration now sends the confirmation link back to the site's `index.html`; that exact URL must be allowed in Supabase Auth → URL Configuration.
 
 ## Security and launch limitations
 - Public client uses only a publishable key; database policies enforce access.
@@ -43,3 +43,7 @@ on conflict do nothing;
 
 ## Run
 Serve through GitHub Pages or a local static server. Supabase JS is loaded from a version-pinned CDN build.
+
+
+## Regression tests
+Run `node --test tests/*.test.cjs` with Node.js 18 or newer. These tests cover asynchronously loaded catalogue filtering and provider embed URL constraints.

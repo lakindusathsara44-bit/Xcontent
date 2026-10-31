@@ -14,26 +14,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   }
 
-  const cards=[...document.querySelectorAll('.video-card')];
   const searchForm=document.getElementById('videoSearch');
   const searchInput=document.getElementById('searchInput');
   let activeFilter='all';
   function filterVideos(){
     const term=(searchInput?.value||'').trim().toLowerCase();
-    let shown=0;
-    cards.forEach(card=>{
-      const matchesText=(card.dataset.title||'').toLowerCase().includes(term);
-      const categories=(card.dataset.category||'').split(/\s+/);
-      const matchesCategory=activeFilter==='all'||categories.includes(activeFilter);
-      const visible=matchesText&&matchesCategory;
-      card.hidden=!visible;
-      if(visible)shown++;
-    });
+    const cards=document.querySelectorAll('.video-card');
+    const shown=window.XcontentCatalogue.filterCards(cards,term,activeFilter);
     const empty=document.getElementById('emptyResults');
     if(empty)empty.hidden=shown!==0;
   }
   if(searchForm)searchForm.addEventListener('submit',event=>{event.preventDefault();filterVideos();});
   if(searchInput)searchInput.addEventListener('input',filterVideos);
+  document.addEventListener('xcontent:catalogue-updated',filterVideos);
   document.querySelectorAll('.category-chip').forEach(chip=>chip.addEventListener('click',()=>{
     document.querySelectorAll('.category-chip').forEach(item=>item.classList.remove('active'));
     chip.classList.add('active');activeFilter=chip.dataset.filter||'all';filterVideos();

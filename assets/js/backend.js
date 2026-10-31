@@ -14,17 +14,8 @@ document.addEventListener('DOMContentLoaded',()=>{
    const info=document.createElement('div');info.className='video-card-info';const h=document.createElement('h2');h.textContent=v.title;
    const p=document.createElement('p');p.textContent=v.provider.toUpperCase()+' · Xcontent';info.append(h,p);a.append(thumb,info);grid.append(a);
   });
+  document.dispatchEvent(new Event('xcontent:catalogue-updated'));
  })();
- // Apply search and category filters to asynchronously loaded database cards too.
- const filterRemoteCards=()=>{
-  const term=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();
-  document.querySelectorAll('.remote-video-card').forEach(card=>{
-   const text=(card.textContent||'').toLowerCase();
-   card.hidden=!text.includes(term);
-  });
- };
- const remoteSearch=document.getElementById('searchInput');
- if(remoteSearch)remoteSearch.addEventListener('input',filterRemoteCards);
  // Resolve a published video detail by UUID.
  const videoId=new URLSearchParams(location.search).get('id');
  const remote=document.getElementById('remoteVideoPlayer');
