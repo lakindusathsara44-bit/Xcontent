@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
  })();
  // Apply search and category filters to asynchronously loaded database cards too.
- let remoteCategory='all';
  const filterRemoteCards=()=>{
   const term=(document.getElementById('searchInput')?.value||'').trim().toLowerCase();
   document.querySelectorAll('.remote-video-card').forEach(card=>{
@@ -26,7 +25,6 @@ document.addEventListener('DOMContentLoaded',()=>{
  };
  const remoteSearch=document.getElementById('searchInput');
  if(remoteSearch)remoteSearch.addEventListener('input',filterRemoteCards);
- document.querySelectorAll('.category-chip').forEach(chip=>chip.addEventListener('click',()=>{remoteCategory=chip.dataset.filter||'all';filterRemoteCards();}));
  // Resolve a published video detail by UUID.
  const videoId=new URLSearchParams(location.search).get('id');
  const remote=document.getElementById('remoteVideoPlayer');
