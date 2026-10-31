@@ -110,22 +110,47 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(clearButton)clearButton.addEventListener('click',clearPreview);
   window.addEventListener('beforeunload',()=>{if(previewUrl)URL.revokeObjectURL(previewUrl);});
 
-  // Only official YouTube/Vimeo URL patterns are accepted for this safe demo.
+  // Provider-aware URL checker. Adult-site players are deliberately not loaded in this non-explicit prototype.
   const embedForm=document.getElementById('embedForm');
   if(embedForm)embedForm.addEventListener('submit',event=>{
-    event.preventDefault();let url;
+    event.preventDefault();
+    let url;
     try{url=new URL(document.getElementById('embedUrl').value.trim());}catch{showToast('Enter a valid video URL.');return;}
-    let embedUrl=null,provider='';
-    if((url.hostname==='www.youtube.com'||url.hostname==='youtube.com')&&url.pathname==='/watch'&&url.searchParams.get('v')){
+    if(url.protocol!=='https:'){showToast('Use a secure HTTPS video URL.');return;}
+    const host=url.hostname.toLowerCase().replace(/^www\./,'');
+    let embedUrl=null,provider='',adultProvider=false;
+    if(host==='youtube.com'&&url.pathname==='/watch'&&url.searchParams.get('v')){
       embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.searchParams.get('v'));provider='YouTube';
-    }else if(url.hostname==='youtu.be'&&url.pathname.length>1){
+    }else if(host==='youtu.be'&&url.pathname.length>1){
       embedUrl='https://www.youtube-nocookie.com/embed/'+encodeURIComponent(url.pathname.slice(1));provider='YouTube';
-    }else if((url.hostname==='vimeo.com'||url.hostname==='www.vimeo.com')&&/^\/[0-9]+$/.test(url.pathname)){
+    }else if(host==='vimeo.com'&&/^\/[0-9]+$/.test(url.pathname)){
       embedUrl='https://player.vimeo.com/video/'+url.pathname.slice(1);provider='Vimeo';
-    }else{showToast('This demo accepts only standard YouTube or Vimeo video links.');return;}
-    document.getElementById('embedFrame').src=embedUrl;
-    document.getElementById('embedProviderNote').textContent=provider+' embed preview. Share only videos you own or are authorised to embed.';
-    document.getElementById('embedPreview').hidden=false;
+    }else if(['pornhub.com','xvideos.com','redtube.com','xnxx.com'].includes(host)){
+      const validPath={
+        'pornhub.com':/^\/(view_video\.php|video\/)[^/]+/i,
+        'xvideos.com':/^\/video[^/]+/i,
+        'redtube.com':/^\/[^/]*video[^/]*\/[0-9]+/i,
+        'xnxx.com':/^\/video-[^/]+/i
+      };
+      if(!validPath[host].test(url.pathname)){showToast('The link host is recognised, but this does not look like a supported video page URL.');return;}
+      provider=host==='pornhub.com'?'Pornhub':host==='xvideos.com'?'XVideos':host==='redtube.com'?'RedTube':'XNXX';
+      adultProvider=true;
+    }else{showToast('Supported providers: YouTube, Vimeo, Pornhub, XVideos, RedTube and XNXX.');return;}
+    const preview=document.getElementById('embedPreview');
+    const frame=document.getElementById('embedFrame');
+    const note=document.getElementById('embedProviderNote');
+    const linkCard=document.getElementById('providerLinkCard');
+    if(frame){frame.hidden=adultProvider;frame.src=adultProvider?'about:blank':embedUrl;}
+    if(linkCard){
+      linkCard.hidden=!adultProvider;
+      if(adultProvider){
+        document.getElementById('providerName').textContent=provider+' link recognised';
+        document.getElementById('providerStatusText').textContent='External player disabled in this prototype. The original page can be opened directly; embedding must use the provider’s official embed code and comply with its current rules.';
+        const open=document.getElementById('providerOpenLink');open.href=url.href;
+      }
+    }
+    note.textContent=adultProvider?'Provider detected. No adult-site player or media has been loaded.':' '+provider+' demo embed preview. Share only videos you own or are authorised to embed.';
+    preview.hidden=false;
   });
 });
 function showToast(message){let toast=document.querySelector('.toast');if(!toast){toast=document.createElement('div');toast.className='toast';document.body.appendChild(toast);}toast.textContent=message;toast.style.display='block';clearTimeout(window.xToastTimer);window.xToastTimer=setTimeout(()=>toast.style.display='none',2600);}
