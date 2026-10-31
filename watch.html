@@ -19,10 +19,29 @@
         <div class="watch-player"><video controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1400&auto=format&fit=crop&q=85"><source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">Your browser does not support HTML video.</video></div>
         <h1>Nature in motion</h1><p class="watch-meta">Xcontent Demo · Sample video · Non-explicit demo media</p>
         <p class="watch-description">A short sample clip to demonstrate the public video player layout. Video playback is provided by an external public demo asset.</p>
+        <section class="interaction-panel" aria-label="Video interactions">
+          <div class="reaction-row">
+            <button class="reaction-button" id="likeButton" type="button" aria-pressed="false">👍 Like <span id="likeCount">0</span></button>
+            <button class="reaction-button" id="dislikeButton" type="button" aria-pressed="false">👎 Dislike <span id="dislikeCount">0</span></button>
+            <button class="reaction-button report-trigger" id="reportToggle" type="button">⚑ Report</button>
+          </div>
+          <form id="reportForm" class="inline-form" hidden>
+            <label for="reportReason">Why are you reporting this demo video?</label>
+            <select id="reportReason" required><option value="">Choose a reason</option><option>Spam or misleading</option><option>Copyright or ownership concern</option><option>Harassment or harmful behaviour</option><option>Other concern</option></select>
+            <textarea id="reportDetails" rows="2" maxlength="500" placeholder="Optional details (do not include private information)"></textarea>
+            <button class="button button-small" type="submit">Submit demo report</button>
+          </form>
+          <div class="comments-block">
+            <h2>Comments <span id="commentCount">0</span></h2>
+            <form id="commentForm" class="comment-form"><label class="sr-only" for="commentInput">Write a comment</label><textarea id="commentInput" rows="3" maxlength="500" placeholder="Add a comment to this local demo..." required></textarea><button class="button button-small" type="submit">Post comment</button></form>
+            <p class="local-data-note">Demo only: reactions and comments are saved in this browser's local storage. They are not sent to a server or visible to other visitors.</p>
+            <div id="commentsList" class="comments-list" aria-live="polite"><p class="empty-state">No comments yet. Be the first to comment.</p></div>
+          </div>
+        </section>
       </div>
       <aside class="watch-sidebar"><span class="eyebrow">UP NEXT</span><a class="up-next" href="index.html"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=320&auto=format&fit=crop&q=80" alt="Mountain landscape"><span><b>Open horizons</b><small>Wander Studio · Demo</small></span></a><a class="up-next" href="index.html"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=320&auto=format&fit=crop&q=80" alt="Ocean waves"><span><b>Ocean calm</b><small>Blue Horizon · Demo</small></span></a></aside>
     </div>
-    <div class="prototype-notice"><b>Demo player</b><p>No account is required. This is sample content only; uploads, subscriptions and payments are not enabled.</p></div>
+    <div class="prototype-notice"><b>Demo player</b><p>No account is required. This is sample content only. Interaction data is stored locally in your browser; no backend or moderation queue is connected.</p></div>
   </main>
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html">X<span>content</span></a><span>© 2026 Xcontent · Demo player</span></div></footer>
 </body></html>
