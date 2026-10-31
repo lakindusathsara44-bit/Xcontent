@@ -16,9 +16,19 @@
     <a class="back-link" href="index.html">← Back to videos</a>
     <div class="watch-layout">
       <div>
-        <div class="watch-player"><video id="demoPlayer" controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1400&auto=format&fit=crop&q=85"><source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">Your browser does not support HTML video.</video><div id="remoteVideoPlayer" hidden></div></div>
-        <h1>Nature in motion</h1><p class="watch-meta">Xcontent Demo · Sample video · Non-explicit demo media</p>
-        <p class="watch-description">A short sample clip to demonstrate the public video player layout. Video playback is provided by an external public demo asset.</p>
+        <section class="embed-tool" aria-labelledby="embedToolTitle" style="margin:0 0 18px;padding:18px;border:1px solid #30303b;border-radius:14px;background:#11111a">
+          <h2 id="embedToolTitle" style="margin:0 0 8px">Play a video link</h2>
+          <p style="margin:0 0 12px;color:#aaa">Paste a Pornhub / XVideos video URL, official embed URL, or iframe embed code. The player loads directly from the provider; Xcontent does not download or host the video.</p>
+          <form id="embedForm" class="inline-form">
+            <label for="embedUrl">Video URL or iframe code</label>
+            <textarea id="embedUrl" rows="3" maxlength="5000" placeholder="Paste video URL or official iframe embed code here" required></textarea>
+            <button class="button button-small" type="submit">Load preview</button>
+          </form>
+          <p id="embedProviderNote" role="status" style="margin:10px 0 0;color:#aaa">Only official provider embed URLs are loaded. If a video cannot be embedded, open its original page.</p>
+        </section>
+        <div class="watch-player"><iframe id="embedFrame" title="External video preview" hidden width="100%" height="450" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe><div id="providerLinkCard" hidden style="padding:22px;background:#171720;border-radius:12px"><b id="providerName">Video provider</b><p id="providerStatusText">This video cannot be embedded here.</p><a id="providerOpenLink" class="button button-small" href="#" target="_blank" rel="noopener noreferrer">Open original video</a></div><video id="demoPlayer" controls playsinline preload="metadata" poster="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=1400&auto=format&fit=crop&q=85"><source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">Your browser does not support HTML video.</video><div id="remoteVideoPlayer" hidden></div></div>
+        <h1>Video Preview</h1><p class="watch-meta">External provider player · Preview only</p>
+        <p class="watch-description">Use the field above to preview a video using its official embed URL or iframe code. Provider restrictions may prevent playback.</p>
         <section class="interaction-panel" aria-label="Video interactions">
           <div class="reaction-row">
             <button class="reaction-button" id="likeButton" type="button" aria-pressed="false">👍 Like <span id="likeCount">0</span></button>
@@ -41,7 +51,7 @@
       </div>
       <aside class="watch-sidebar"><span class="eyebrow">UP NEXT</span><a class="up-next" href="index.html"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=320&auto=format&fit=crop&q=80" alt="Mountain landscape"><span><b>Open horizons</b><small>Wander Studio · Demo</small></span></a><a class="up-next" href="index.html"><img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=320&auto=format&fit=crop&q=80" alt="Ocean waves"><span><b>Ocean calm</b><small>Blue Horizon · Demo</small></span></a></aside>
     </div>
-    <div class="prototype-notice"><b>Demo player</b><p>Published, authorised YouTube, Vimeo, Pornhub and XVideos links are loaded from the shared catalogue. Comments and reports remain local demo interactions.</p></div>
+    <div class="prototype-notice"><b>External embed preview</b><p>Videos are streamed from their original provider using an official embed player. Xcontent does not download, proxy, or re-host third-party videos. Only use content you are authorised to embed.</p></div>
   </main>
   <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html">X<span>content</span></a><span>© 2026 Xcontent · Demo player</span></div></footer>
 </body></html>
