@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         'redtube.com':/^\/[^/]*video[^/]*\/[0-9]+/i,
         'xnxx.com':/^\/video-[^/]+/i
       };
-      if(!validPath[host].test(url.pathname)){showToast('The link host is recognised, but this does not look like a supported video page URL.');return;}
+      if(!validPath[host].test(url.pathname)||(host==='pornhub.com'&&!url.searchParams.get('viewkey'))){showToast('The link host is recognised, but this does not look like a supported video page URL.');return;}
       provider=host==='pornhub.com'?'Pornhub':host==='xvideos.com'?'XVideos':host==='redtube.com'?'RedTube':'XNXX';
       adultProvider=true;
     }else{showToast('Supported providers: YouTube, Vimeo, Pornhub, XVideos, RedTube and XNXX.');return;}
