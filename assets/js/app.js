@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     let shown=0;
     cards.forEach(card=>{
       const matchesText=(card.dataset.title||'').toLowerCase().includes(term);
-      const categories=(card.dataset.category||'').split(/\\s+/);
+      const categories=(card.dataset.category||'').split(/\s+/);
       const matchesCategory=activeFilter==='all'||categories.includes(activeFilter);
       const visible=matchesText&&matchesCategory;
       card.hidden=!visible;
