@@ -11,8 +11,9 @@ A dark, responsive **non-explicit front-end concept prototype** for a public vid
 ## Creator tools
 - `creator/index.html` — creator workspace concept
 - Local video preview accepts MP4, WebM and Ogg files up to 100 MB; it uses a temporary browser object URL only. The file is not uploaded, saved or published.
-- External embed preview accepts standard YouTube and Vimeo video URLs only, and only for videos the user owns or is authorised to share.
-- Pornhub, OnlyFans, XVideos and xHamster integrations are not enabled in this prototype. Any future provider integration needs provider-term and embed-permission checks, rights review, legal review, age/consent safeguards and security assessment.
+- YouTube and Vimeo URLs can load a non-explicit demo embed preview for videos the user owns or is authorised to share.
+- The creator tool recognises Pornhub, XVideos, RedTube and XNXX video-page URLs and provides a direct link to the source page. Their external players are deliberately not loaded in this non-explicit prototype.
+- Provider recognition is not embed permission. Any production integration must use the provider's official embed code and pass current provider-term, copyright, legal, age/consent, privacy and security reviews.
 
 ## Shared assets
 - `assets/css/styles.css` — shared theme, responsive layouts and component styles
