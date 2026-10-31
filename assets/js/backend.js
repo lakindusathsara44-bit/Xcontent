@@ -67,12 +67,12 @@ document.addEventListener('DOMContentLoaded',()=>{
    else if(host==='pornhub.com'&&u.pathname==='/view_video.php'){id=u.searchParams.get('viewkey')||'';provider='pornhub';source='https://www.pornhub.com/view_video.php?viewkey='+encodeURIComponent(id);}
    else if(host==='pornhub.com'&&/^\/embed\/[A-Za-z0-9]+$/.test(u.pathname)){id=u.pathname.split('/')[2];provider='pornhub';source='https://www.pornhub.com/view_video.php?viewkey='+encodeURIComponent(id);}
    else if(host==='xvideos.com'&&/^\/video[0-9]+(?:\/[^/]+)?\/?$/.test(u.pathname)){id=(u.pathname.match(/^\/video([0-9]+)/)||[])[1]||'';provider='xvideos';source='https://www.xvideos.com/video'+id;}
-   else if(host==='xvideos.com'&&/^\/embedframe\/[0-9]+$/.test(u.pathname)){id=u.pathname.split('/')[2];provider='xvideos';source='https://www.xvideos.com/embedframe/'+id;}
+   else if(host==='xvideos.com'&&/^\/embedframe\/[A-Za-z0-9_-]+$/.test(u.pathname)){id=u.pathname.split('/')[2];provider='xvideos';source='https://www.xvideos.com/embedframe/'+id;}
    if(!id||!provider){toast('Use an official YouTube, Vimeo, Pornhub or XVideos video/embed URL.');return;}
    if(provider==='youtube'&&!/^[A-Za-z0-9_-]{6,20}$/.test(id)){toast('Invalid YouTube video ID.');return;}
    if(provider==='vimeo'&&!/^[0-9]+$/.test(id)){toast('Invalid Vimeo video ID.');return;}
    if(provider==='pornhub'&&!/^[A-Za-z0-9]{5,40}$/.test(id)){toast('Invalid Pornhub video key.');return;}
-   if(provider==='xvideos'&&!/^[0-9]{4,20}$/.test(id)){toast('Invalid XVideos video ID.');return;}
+   if(provider==='xvideos'&&!/^[A-Za-z0-9_-]{4,40}$/.test(id)){toast('Invalid XVideos video ID.');return;}
    const embed=provider==='youtube'?'https://www.youtube-nocookie.com/embed/'+id:provider==='vimeo'?'https://player.vimeo.com/video/'+id:provider==='pornhub'?'https://www.pornhub.com/embed/'+id:'https://www.xvideos.com/embedframe/'+id;
    const thumb=thumbnail&&/^https:\/\//i.test(thumbnail)?thumbnail:(provider==='youtube'?'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg':null);
    const {error}=await db.from('videos').insert({title,description,provider,source_url:source,embed_url:embed,thumbnail_url:thumb,status,created_by:session.user.id});
