@@ -121,3 +121,17 @@ body.age-locked .site-header,body.age-locked main,body.age-locked footer{visibil
 .provider-link-card{margin-top:12px;padding:16px;border:1px solid #8c6a3b66;border-radius:11px;background:#9a6a2510}
 .provider-link-card p{margin:7px 0 12px}
 .embed-preview iframe[hidden]{display:none}
+
+/* Supabase owner catalogue */
+#remoteVideoPlayer{width:100%;height:100%;aspect-ratio:16/9}
+#remoteVideoPlayer iframe{display:block;width:100%;height:100%;min-height:260px;border:0}
+.video-placeholder{display:grid;place-items:center;color:#caaaff;font-size:34px;font-weight:800;background:linear-gradient(140deg,#26183c,#12121b)}
+.owner-session-row,.admin-video-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.owner-session-row{padding:12px 15px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.admin-video-list{display:grid;gap:10px}
+.admin-video-row{padding:13px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.admin-video-row b,.admin-video-row small{display:block}
+.admin-video-row small{color:var(--muted);font-size:11px;margin-top:3px}
+.admin-video-actions{display:flex;gap:7px;flex-wrap:wrap}
+#creatorAdminPanel{margin-top:15px}
+#videoPublishForm textarea{width:100%;padding:12px;border:1px solid #343044;border-radius:10px;background:#0c0c13;color:white;resize:vertical}
