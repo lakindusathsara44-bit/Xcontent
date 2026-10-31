@@ -1,14 +1,15 @@
 # Xcontent
 
-A dark, responsive **non-explicit public video discovery prototype** with a Supabase-backed catalogue of authorised YouTube/Vimeo links.
+A dark, responsive **non-explicit public video discovery prototype** with a Supabase-backed catalogue of authorised YouTube, Vimeo, Pornhub and XVideos embed links.
 
 ## Current implementation
 - Public visitors can browse sample cards and owner-published links.
 - `creator/index.html` is an owner workspace backed by Supabase Auth and Row Level Security.
 - Only an account added to the private admin allowlist can create, publish, unpublish or delete links.
-- URLs are parsed and converted into fixed YouTube-nocookie or Vimeo player URLs. Arbitrary iframe HTML is rejected.
+- URLs are parsed and converted into fixed official YouTube-nocookie, Vimeo, Pornhub or XVideos player URLs. Arbitrary iframe HTML is rejected.
 - Public visitors can only read rows with `status = 'published'`.
 - No media files are uploaded. Only metadata and provider URLs are stored.
+- Pornhub and XVideos support is limited to their official embed-player URL patterns; the app does not scrape provider pages or import video catalogs.
 - Likes, comments and reports remain local browser demos and are not sent to a moderation team.
 
 ## Supabase project
@@ -37,7 +38,7 @@ on conflict do nothing;
 - No public insert/update/delete policies on videos.
 - Admin membership is stored privately, not in user-editable metadata.
 - Age prompt is not age verification.
-- No explicit media hosting/uploads, subscriptions or payments are enabled.
+- No media hosting/uploads, automated scraping, subscriptions or payments are enabled. Adult-content publication requires separate legal, age-assurance, consent, moderation and provider-terms review; a simple age prompt is not age verification.
 - Before launch, review local law, copyright, provider terms, age assurance, uploader verification, consent, privacy, moderation, security and payment-provider approval.
 
 ## Run
