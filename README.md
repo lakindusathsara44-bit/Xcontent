@@ -1,39 +1,44 @@
 # Xcontent
 
-A dark, responsive **non-explicit front-end concept prototype** for a public video discovery and creator membership platform.
+A dark, responsive **non-explicit public video discovery prototype** with a Supabase-backed catalogue of authorised YouTube/Vimeo links.
 
-## Public browsing experience
-- `index.html` — first-visit age-prompt mock-up followed by public video discovery
-- `watch.html` — sample video player with local demo reactions, comments and report form
-- Public demo browsing does not require login
-- Search and category filters work on sample video cards
+## Current implementation
+- Public visitors can browse sample cards and owner-published links.
+- `creator/index.html` is an owner workspace backed by Supabase Auth and Row Level Security.
+- Only an account added to the private admin allowlist can create, publish, unpublish or delete links.
+- URLs are parsed and converted into fixed YouTube-nocookie or Vimeo player URLs. Arbitrary iframe HTML is rejected.
+- Public visitors can only read rows with `status = 'published'`.
+- No media files are uploaded. Only metadata and provider URLs are stored.
+- Likes, comments and reports remain local browser demos and are not sent to a moderation team.
 
-## Creator tools
-- `creator/index.html` — creator workspace concept
-- Local video preview accepts MP4, WebM and Ogg files up to 100 MB; it uses a temporary browser object URL only. The file is not uploaded, saved or published.
-- YouTube and Vimeo URLs can load a non-explicit demo embed preview for videos the user owns or is authorised to share.
-- The creator tool recognises Pornhub, XVideos, RedTube and XNXX video-page URLs and provides a direct link to the source page. Their external players are deliberately not loaded in this non-explicit prototype.
-- Provider recognition is not embed permission. Any production integration must use the provider's official embed code and pass current provider-term, copyright, legal, age/consent, privacy and security reviews.
+## Supabase project
+- Project ref: `oqyfvvwplvbmmursbpkd` (Singapore)
+- Database migrations are stored in `supabase/migrations/`.
+- Browser config uses the publishable key only. Never add a secret or service-role key to this repository.
+- RLS is enabled on public video data and private admin tables.
 
-## Shared assets
-- `assets/css/styles.css` — shared theme, responsive layouts and component styles
-- `assets/js/loader.js` — page loading animation
-- `assets/js/app.js` — navigation, age prompt, search, local interactions and local preview tools
-- `assets/js/auth.js` — client-side demo-only form flow
+## Owner account activation
+1. Create your account at `auth/register.html` or in Supabase Authentication.
+2. Add your exact account email to the private allowlist and grant the owner role in Supabase SQL Editor:
 
-## Run locally
-No build tools or dependencies are required. Clone or download the repository and open `index.html` in a modern browser. GitHub Pages can serve this static prototype once Pages is configured.
+```sql
+insert into private.admin_emails(email) values (lower('OWNER_EMAIL_HERE'))
+on conflict do nothing;
+insert into private.site_admins(user_id)
+select id from auth.users where lower(email) = lower('OWNER_EMAIL_HERE')
+on conflict do nothing;
+```
 
-## Important limitations
-This is a **non-explicit UI prototype only**. The age prompt is a session-only interface demonstration; it does not verify age or provide legally sufficient age assurance.
+3. Log in at `auth/login.html` and open Owner Studio.
+4. Set the Supabase Auth Site URL and redirect allowlist to the deployed GitHub Pages domain.
 
-Likes, dislikes, comments and reports are stored only in the current browser's local storage for the sample video. They are not sent to a server, shared with other visitors or delivered to moderators. Local video preview never transmits the selected file. No backend, real authentication, database, public upload pipeline, moderation queue, subscription or payment processing exists.
+## Security and launch limitations
+- Public client uses only a publishable key; database policies enforce access.
+- No public insert/update/delete policies on videos.
+- Admin membership is stored privately, not in user-editable metadata.
+- Age prompt is not age verification.
+- No explicit media hosting/uploads, subscriptions or payments are enabled.
+- Before launch, review local law, copyright, provider terms, age assurance, uploader verification, consent, privacy, moderation, security and payment-provider approval.
 
-The demo uses public sample photos from Unsplash and a public sample video from MDN. External media availability and terms are controlled by those providers. Only YouTube/Vimeo embed URL formats are accepted in the creator preview.
-
-Do not enter real passwords, identity documents or private media. Before any real-world launch, obtain jurisdiction-specific legal advice and implement independently assessed age assurance, uploader verification, documented consent and rights checks, privacy safeguards, moderation/reporting workflows, secure media processing, security controls and explicit payment-provider approval. A foreign hosting provider or company does not automatically remove obligations in places where the service is operated or accessed.
-
-## Suggested next milestones
-1. Browser and accessibility testing on desktop and mobile
-2. Design and threat-model a backend without enabling real uploads or payments
-3. Independent legal, privacy, age-assurance and payment-provider review before production functionality
+## Run
+Serve through GitHub Pages or a local static server. Supabase JS is loaded from a version-pinned CDN build.
